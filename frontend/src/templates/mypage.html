@@ -3,16 +3,17 @@
 <h2>登録情報変更</h2>
 <form action="" method="post">
   <label for="email">メールアドレス</label>
-  <input type="email" autocomplete="email" name="email" id="email" required placeholder="example@example.com" />
+  <input type="email" autocomplete="email" name="email" id="email" required placeholder="example@example.com"
+    value="{{ email }}" />
   <label for="password">新しいパスワード <small>※変更する場合のみ入力</small></label>
-  <input type="password" autocomplete="new-password" name="new-password" id="new-password" required
-    placeholder="new-password" />
+  <input type="password" autocomplete="new-password" name="new-password" id="new-password" placeholder="new-password" />
   <label for="username">ユーザー名</label>
-  <input type="text" autocomplete="username" name="username" id="username" required placeholder="username" />
+  <input type="text" autocomplete="username" name="username" id="username" required placeholder="username"
+    value="{{ username }}" />
   <p>
     <button type="submit">保存</button>
   </p>
   <p>
-    <strong>保存が失敗しました<!-- もしくは "保存が成功しました" --></strong>
+    <strong></strong>
   </p>
 </form>

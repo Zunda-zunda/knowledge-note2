@@ -6,12 +6,15 @@ import { getCookieMap } from './utils/cookie';
 import { home } from './pages/home';
 import { bootstrap } from './core/bootstrap';
 import { mypage } from './pages/mypage';
+import { userCheck } from './utils/user-check';
+import { articlesNew } from './pages/articles/new';
 
 bootstrap(
   router(
     [
       { path: '/', fn: home },
-      { path: '/mypage', fn: mypage },
+      { path: '/mypage', fn: userCheck(mypage) },
+      { path: '/articles/new', fn: userCheck(articlesNew) },
       { path: '/articles/:id', fn: ({ id }) => { /* 未実装 */ } },
       { path: '/register', fn: guestCheck(register) },
       { path: '/login', fn: guestCheck(login) },

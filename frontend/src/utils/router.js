@@ -74,7 +74,7 @@ export const findRoute = (url) => {
       return { ...route, displayPriority, fn: route.fn.bind(route.fn, Object.fromEntries(pathParameterMap)) };
     })
     .filter(({ displayPriority }) => displayPriority)
-    .sort(({ priority: a }, { priority: b }) => a < b ? 1 : -1)
+    .sort(({ priority: a }, { priority: b }) => a === b ? 0 : (a < b ? 1 : -1))
     .at(0);
 };
 

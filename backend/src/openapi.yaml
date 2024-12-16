@@ -7,6 +7,22 @@ paths:
   /api/v1/login:
     post:
       summary: "ログイン処理"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "example@example.com"
+                password:
+                  type: string
+                  example: "password"
       responses:
         200:
           description: "ログイン成功時のレスポンス"
@@ -18,9 +34,12 @@ paths:
                   message:
                     type: string
                     example: "OK"
-                example:
-                  { "message": "OK" }
-                  # message: "OK" # yaml形式な代替表記
+                example: { "message": "OK" }
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: "connect.sid=s%3Adw4pk3CJSO1jRLrG9pbbqGo-3dKcSs8_.kJTkHzq8fmFFRJH7xJzEE%2Fe%2F8LuoBKDJ5E%2BtUs%2BkIlg; Path=/; Expires=Sun, 15 Dec 2024 06:57:47 GMT; HttpOnly,user.id=d990077e-d6ab-4c19-a0b7-0fb76564ede5; Max-Age=3600; Path=/; Expires=Sun, 15 Dec 2024 06:57:47 GMT,user.username=example; Max-Age=3600; Path=/; Expires=Sun, 15 Dec 2024 06:57:47 GMT"
   /api/v1/register:
     post:
       summary: "アカウント登録"
@@ -55,6 +74,138 @@ paths:
                   message:
                     type: string
                     example: "OK"
+                example: { "message": "OK" }
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: "connect.sid=s%3Adw4pk3CJSO1jRLrG9pbbqGo-3dKcSs8_.kJTkHzq8fmFFRJH7xJzEE%2Fe%2F8LuoBKDJ5E%2BtUs%2BkIlg; Path=/; Expires=Sun, 15 Dec 2024 06:57:47 GMT; HttpOnly,user.id=d990077e-d6ab-4c19-a0b7-0fb76564ede5; Max-Age=3600; Path=/; Expires=Sun, 15 Dec 2024 06:57:47 GMT,user.username=example; Max-Age=3600; Path=/; Expires=Sun, 15 Dec 2024 06:57:47 GMT"
+  /api/v1/articles:
+    post:
+      summary: "記事新規作成"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - title
+                - body
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "記事タイトル"
+                body:
+                  type: string
+                  example: "# 見出し\n\n本文"
+      responses:
+        200:
+          description: "コンテンツが正常に新規作成できた際のレスポンス"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "保存成功"
+                  article:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "1459b840-f3b7-474b-967a-f526b7e287cb"
+                      userId:
+                        type: string
+                        example: "d990077e-d6ab-4c19-a0b7-0fb76564ede5"
+                      title:
+                        type: string
+                        example: "記事タイトル"
+                      body:
+                        type: string
+                        example: "# 見出し\n\n本文"
+                      createdAt:
+                        type: string
+                        example: "2024-12-15T08:18:31.990Z"
+                      updatedAt:
+                        type: string
+                        example: "2024-12-15T08:18:31.990Z"
                 example:
-                  { "message": "OK" }
-                  # message: "OK" # yaml形式な代替表記
+                  {
+                    "isSuccess": true,
+                    "message": "保存成功",
+                    "article":
+                      {
+                        "id": "1459b840-f3b7-474b-967a-f526b7e287cb",
+                        "userId": "d990077e-d6ab-4c19-a0b7-0fb76564ede5",
+                        "title": "記事タイトル",
+                        "body": "# 見出し\n\n本文",
+                        "createdAt": "2024-12-15T08:18:31.990Z",
+                        "updatedAt": "2024-12-15T08:18:31.990Z"
+                      }
+                  }
+    get:
+      summary: "記事一覧取得"
+      responses:
+        200:
+          description: "記事一覧取得のレスポンス"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "b7060167-df6c-41eb-829a-30e2d6d679d5"
+                        title:
+                          type: string
+                          example: "コンテンツタイトル1"
+                        body:
+                          type: string
+                          example: "# Markdown形式のテキスト\n\n本文"
+                        createdAt:
+                          type: string
+                          example: "2024-12-15T06:49:23.653Z"
+                        updatedAt:
+                          type: string
+                          example: "2024-12-15T06:49:23.653Z"
+                example:
+                  {
+                    "isSuccess": true,
+                    "items":
+                      [
+                        {
+                          "id": "b7060167-df6c-41eb-829a-30e2d6d679d5",
+                          "title": "コンテンツタイトル1",
+                          "body": "# Markdown形式のテキスト\n\n本文",
+                          "createdAt": "2024-12-14T06:49:23.653Z",
+                          "updatedAt": "2024-12-14T06:49:23.653Z",
+                        },
+                        {
+                          "id": "201f447f-acef-4463-8cc6-5c359f9b9d0f",
+                          "title": "コンテンツタイトル1",
+                          "body": "# Markdown形式のテキスト\n\n本文",
+                          "createdAt": "2024-12-15T06:49:23.653Z",
+                          "updatedAt": "2024-12-15T06:49:23.653Z",
+                        },
+                      ],
+                  }
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: connect.sid

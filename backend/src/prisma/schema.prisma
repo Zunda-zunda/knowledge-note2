@@ -10,9 +10,40 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+generator erd {
+  provider     = "prisma-erd-generator"
+  output       = "../output.er.md"
+  disableEmoji = true
+}
+
 model User {
+  /// ユーザー識別値
   id       String @id @default(uuid())
+  /// 表示用ユーザー名
   username String @unique
+  /// メールアドレス
   email    String @unique
+  /// パスワードをハッシュ化（暗号化）した値
   password String
+
+  /// Userに紐づくArticle達 ユーザーが投稿した投稿
+  Article Article[]
+}
+
+model Article {
+  /// 記事識別値
+  id        String   @id @default(uuid())
+  /// ユーザーID Userテーブルのid
+  userId    String
+  /// 記事タイトル
+  title     String
+  /// 記事本文
+  body      String
+  /// 記事作成日時
+  createdAt DateTime @default(now())
+  /// 記事更新日時
+  updatedAt DateTime @updatedAt
+
+  /// Articleに紐づくUser 記事の作者
+  user User @relation(fields: [userId], references: [id])
 }

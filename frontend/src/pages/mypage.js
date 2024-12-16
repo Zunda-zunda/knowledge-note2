@@ -2,62 +2,42 @@ import mustache from 'mustache';
 // Viteのルールとして、インポートする対象のファイルをそのまま取得するためには相対パスの末尾に"?raw"を付与する必要がある
 import html from '../templates/mypage.html?raw';
 
-export const mypage = () => {
+export const mypage = async () => {
+  const response = await fetch('/api/v1/user/me')
+    .then(response => response.json());
+
+  const user = response.user;
   const app = document.querySelector('#app');
-  app.innerHTML = mustache.render(html, { hoge: 'HOME' });
+  // HTML上で {{ email }} と書くとJSの `user.email` の値に置き換わる
+  // 例: <div>{{ username }}</div> → <div>ユーザー名</div>
+  // mustache.render の第2引数でプロパティとそれの値をセットしてテンプレートに渡しつつHTML出力ができる
+  app.innerHTML = mustache.render(html, { email: user.email, username: user.username });
 
-  // フォームの取得
-  const form = document.querySelector('form');
-  const messageElement = form.querySelector('strong');
+  const username = document.querySelector('input[name="username"]');
+  const email = document.querySelector('input[name="email"]');
+  const password = document.querySelector('input[name="new-password"]');
 
-  // フォーム送信時の処理
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault(); // フォームのデフォルト送信を防止
+  document.addEventListener('submit', e => {
+    // 送信処理を中断して代わりに後続の処理を実行
+    e.preventDefault();
+    const data = {};
+    if (username) data.username = username.value;
+    if (email) data.email = email.value;
+    if (password) data.password = password.value;
 
-    // フォームの入力内容を取得
-    const email = form.email.value;
-    const newPassword = form['new-password'].value;
-    const username = form.username.value;
-
-
-    // 新しいパスワードが入力されていない場合は、エラーメッセージを表示
-    if (!newPassword) {
-      messageElement.style.color = 'red';
-      messageElement.textContent = '新しいパスワードを入力してください';
-      return;
-    }
-
-    // サーバーに送信するデータの準備
-    const data = {
-      email: email,
-      username: username,
-      newPassword: newPassword,
-    };
-
-    try {
-      // サーバーにPOSTリクエストを送信
-      const response = await fetch('/api/v1/user-update', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      // 成功した場合、または失敗した場合のメッセージ処理
-      if (response.ok) {
-        messageElement.style.color = 'green';
-        messageElement.textContent = '保存が成功しました';
-      } else {
-        messageElement.style.color = 'red';
-        messageElement.textContent = `保存が失敗しました: ${result.error || '不明なエラー'}`;
+    fetch('/api/v1/user-update', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'content-type': 'application/json',
       }
-    } catch (error) {
-      // 通信エラーや例外が発生した場合
-      messageElement.style.color = 'red';
-      messageElement.textContent = `保存が失敗しました: ${error.message}`;
-    }
+    })
+      .then(res => res.json())
+      .then(res => {
+        document.querySelector('form strong').textContent = res.message;
+        // 5秒後にメッセージを消す
+        setTimeout(() => document.querySelector('form strong').textContent = '', 5000);
+
+      });
   });
 };

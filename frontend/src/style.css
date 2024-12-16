@@ -89,3 +89,22 @@ footer small {
   display: block;
   text-align: center;
 }
+
+#articles-new-form input[name="title"] {
+  width: 100%;
+}
+
+#articles-new-form-editor {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#articles-new-form-editor>* {
+  flex: 1 1 50%;
+}
+
+#articles-new-form-editor textarea {
+  resize: vertical;
+  min-height: 15rem;
+  field-sizing: content;
+}

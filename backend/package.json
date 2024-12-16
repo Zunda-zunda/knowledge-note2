@@ -5,6 +5,7 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
+    "postinstall": "npm run prisma:migrate; npm run prisma:generate",
     "dev": "nodemon node src/index.js",
     "prisma": "prisma",
     "prisma:migrate": "prisma migrate dev",
@@ -14,10 +15,14 @@
     "schema": "src/prisma/schema.prisma"
   },
   "dependencies": {
+    "@kato83/prisma-erd-generator": "^1.11.6",
     "@prisma/client": "^6.0.0",
     "bcrypt": "^5.1.1",
+    "dompurify": "^3.2.3",
     "express": "^4.21.1",
-    "express-session": "^1.18.1"
+    "express-session": "^1.18.1",
+    "jsdom": "^25.0.1",
+    "marked": "^15.0.4"
   },
   "devDependencies": {
     "nodemon": "^3.1.7",
