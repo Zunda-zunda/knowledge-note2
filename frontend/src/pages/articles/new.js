@@ -30,6 +30,13 @@ import { navigate } from '../../utils/router';
 // Viteのルールとして、インポートする対象のファイルをそのまま取得するためには相対パスの末尾に"?raw"を付与する必要がある
 import html from '../../templates/articles/new.html?raw';
 
+// HTMLを無害化（サニタイズ）するライブラリをインポート
+import DOMPurify from 'dompurify';
+// Markdown形式の文字列をHTML形式の文字列にするライブラリをインポート
+import { parse } from 'marked';
+// URL遷移するための関数をインポート
+import { navigate } from '../../utils/router';
+
 /**
  * 記事新規作成時の処理の関数
  */
