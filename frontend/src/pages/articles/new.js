@@ -71,9 +71,6 @@ export const articlesNew = () => {
     .catch(error => {
       console.error('エラーが発生しました:', error);
     });
-
-    
-
     // 呼び出した関数を実行する。引数は遷移したいパスをスラッシュから入力
     navigate('/mypage');
   });
