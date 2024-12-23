@@ -39,9 +39,9 @@ const app = express()
 
 app.post('/api/v1/login', async (req, res) => {
   console.log(req.body);
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   await prisma.user
-    .findFirstOrThrow({ where: { username } })
+    .findFirstOrThrow({ where: { email } })
     .then(record => new Promise((res, rej) => compareSync(password, record.password)
       ? res(record)
       : rej()))
