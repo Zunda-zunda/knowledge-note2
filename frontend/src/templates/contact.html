@@ -4,16 +4,17 @@
 <form action="/contact" method="post" id="contact-form">
 
   <label for="username">ユーザー名（または氏名）</label>
-  <input type="text" name="name" />
+  <input type="text" name="name" required/>
     
   <label for="email">メールアドレス</label>
-  <input type="email" name="email" placeholder="example@example.com" />
+  <input type="email" autocomplete="email" name="email" id="email" required placeholder="example@example.com"
+  />
+
 
   <div id="editor">
   <div><b>お問い合わせ内容</b></div>
-  <textarea rows="8" name="body"></textarea>
+  <textarea rows="8" name="body" required></textarea>
   </div>
-
   
   
   <p>

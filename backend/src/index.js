@@ -66,37 +66,37 @@ app.post('/api/v1/login', async (req, res) => {
 
 app.post('/api/v1/contact', async (req, res) => {
   console.log(req.body);
-  const { email, name,body } = req.body;
-  await prisma.user
-    .create({
-      select: {
-        id: true,
-        email: true,
-        name: true,
-      },
-      data: {
-        email,
-        name,
-        body,
-      }
-    })
-    .then(record => new Promise((res, rej) => {
-      req.session.regenerate((err) => {
-        if (err) return rej(err);
-        return res(record);
-      });
-    }))
-    .then(record => {
-      req.session.user = record;
-      console.log(req.session)
-      res.cookie('user.id', record.id, { maxAge: _1h });
-      res.cookie('user.username', record.username, { maxAge: _1h });
-      res.json({ isSuccess: true, message: 'OK' });
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(status.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({ isSuccess: false, message: '不明なエラーが発生しました' })
-    });
+  //const { email, name,body } = req.body;
+  // await prisma.user
+  //   .create({
+  //     select: {
+  //       id: true,
+  //       email: true,
+  //       name: true,
+  //     },
+  //     data: {
+  //       email,
+  //       name,
+  //       body,
+  //     }
+  //   })
+  //   .then(record => new Promise((res, rej) => {
+  //     req.session.regenerate((err) => {
+  //       if (err) return rej(err);
+  //       return res(record);
+  //     });
+  //   }))
+  //   .then(record => {
+  //     req.session.user = record;
+  //     console.log(req.session)
+  //     res.cookie('user.id', record.id, { maxAge: _1h });
+  //     res.cookie('user.username', record.username, { maxAge: _1h });
+  //     res.json({ isSuccess: true, message: 'OK' });
+  //   })
+  //   .catch(err => {
+  //     console.error(err);
+  //     res.status(status.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({ isSuccess: false, message: '不明なエラーが発生しました' })
+  //   });
 });
 
 // ユーザー登録処理
